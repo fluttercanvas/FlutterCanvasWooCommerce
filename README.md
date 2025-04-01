@@ -27,4 +27,12 @@ To use this package, follow these steps:
      FlutterCanvasWooCommerce.instance.fetchProducts(pageNumber: 1, perPage: 15);
      ```
 
+3. **Using the API in Your Project for Create**:
+
+   - For example, to create tags, you can implement it as follows:
+
+     ```dart
+     FlutterCanvasWooCommerce.instance.create_tags(name: 'kids' , description: 'clothing for kids' );
+     ```
+
    Make sure to replace `'your_domain_url'`, `'your_consumerKey'`, and `'your_consumerSecret'` with your actual WooCommerce domain URL, consumer key, and consumer secret respectively.

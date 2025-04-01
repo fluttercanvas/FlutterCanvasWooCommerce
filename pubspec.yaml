@@ -1,6 +1,6 @@
 name: flutter_canvas_woocommerce
 description: A new Flutter package that helps Communicate with WooCommerce APIs independently.
-version: 0.0.2
+version: 0.0.3
 homepage: https://github.com/fluttercanvas/FlutterCanvasWooCommerce
 
 environment:
