@@ -7,3 +7,6 @@
 
 - Initial implementation of the `create` function.
 - Introduced the `get` function for retrieving all records.
+
+## 0.0.4
+- Implementation of models in `create` functions.

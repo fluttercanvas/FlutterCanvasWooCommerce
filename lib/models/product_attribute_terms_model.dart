@@ -1,41 +1,42 @@
 // ignore_for_file: non_constant_identifier_names
 
 class ProductAttributeTermsModel {
-  int? id;
-  String? name;
-  String? slug;
-  String? description;
-  int? menu_order;
-  int? count;
+  final int? id;
+  final String? name;
+  final String? slug;
+  final String? description;
+  final int? menu_order;
+  final int? count;
+  final int? attributes_id;
 
   ProductAttributeTermsModel({
     this.id,
     this.name,
     this.slug,
     this.description,
-    required menu_order,
+    this.menu_order,
     this.count,
+    this.attributes_id,
   });
 
   factory ProductAttributeTermsModel.fromJson(Map<String, dynamic> json) {
     return ProductAttributeTermsModel(
-      id: json['id'],
-      name: json['name'],
-      slug: json['slug'],
-      description: json['description'],
-      menu_order: json['menu_order'],
-      count: json['count'],
-    );
+        id: json['id'],
+        name: json['name'],
+        slug: json['slug'],
+        description: json['description'],
+        menu_order: json['menu_order'],
+        count: json['count']);
   }
 
-  Map<String, dynamic> toJson(ProductAttributeTermsModel data) {
+  Map<String, dynamic> toJson() {
     return {
-      'id': data.id,
-      'name': data.name,
-      'slug': data.slug,
-      'description': data.description,
-      'menu_order': data.menu_order,
-      'count': data.count,
+      if (id != null) 'id': id,
+      'name': name,
+      if (slug != null) 'slug': slug,
+      'description': description,
+      if (menu_order != null) 'menu_order': menu_order,
+      if (count != null) 'count': count,
     };
   }
 }

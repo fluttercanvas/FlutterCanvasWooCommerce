@@ -1,11 +1,11 @@
 // ignore_for_file: non_constant_identifier_names
 
 class ProductTagsModel {
-  int? id;
-  String? name;
-  String? slug;
-  String? description;
-  int? count;
+  final int? id;
+  final String? name;
+  final String? slug;
+  final String? description;
+  final int? count;
 
   ProductTagsModel(
       {this.id, this.name, this.slug, this.description, this.count});
@@ -19,14 +19,13 @@ class ProductTagsModel {
       count: json['count'],
     );
   }
-
-  Map<String, dynamic> toJson(ProductTagsModel data) {
+  Map<String, dynamic> toJson() {
     return {
-      'id': data.id,
-      'name': data.name,
-      'slug': data.slug,
-      'description': data.description,
-      'count': data.count,
+      if (id != null) 'id': id,
+      'name': name,
+      if (slug != null) 'slug': slug,
+      'description': description,
+      if (count != null) 'count': count,
     };
   }
 }

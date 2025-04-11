@@ -1,14 +1,14 @@
 // ignore_for_file: non_constant_identifier_names
 
-class ProductAttriduteModel {
-  int? id;
-  String? name;
-  String? slug;
-  String? type;
-  String? order_by;
-  bool? has_archives;
+class ProductAttributeModel {
+  final int? id;
+  final String? name;
+  final String? slug;
+  final String? type;
+  final String? order_by;
+  final bool? has_archives;
 
-  ProductAttriduteModel({
+  ProductAttributeModel({
     this.id,
     this.name,
     this.slug,
@@ -17,8 +17,8 @@ class ProductAttriduteModel {
     this.has_archives,
   });
 
-  factory ProductAttriduteModel.fromJson(Map<String, dynamic> json) {
-    return ProductAttriduteModel(
+  factory ProductAttributeModel.fromJson(Map<String, dynamic> json) {
+    return ProductAttributeModel(
       id: json['id'],
       name: json['name'],
       slug: json['slug'],
@@ -28,14 +28,14 @@ class ProductAttriduteModel {
     );
   }
 
-  Map<String, dynamic> toJson(ProductAttriduteModel data) {
+  Map<String, dynamic> toJson() {
     return {
-      'id': data.id,
-      'name': data.name,
-      'slug': data.slug,
-      'type': data.type,
-      'order_by': data.order_by,
-      'has_archives': data.has_archives,
+      if (id != null) 'id': id,
+      'name': name,
+      if (slug != null) 'slug': slug,
+      if (type != null) 'type': type,
+      if (order_by != null) 'order_by': order_by,
+      if (has_archives != null) 'has_archives': has_archives,
     };
   }
 }

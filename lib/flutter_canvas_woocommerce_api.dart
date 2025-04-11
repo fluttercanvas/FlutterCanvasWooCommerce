@@ -649,255 +649,164 @@ class FlutterCanvasWooCommerce {
           .toList();
     }
   }
-   create_product(
-      {String? name,
-      String? type,
-      String? status,
-      tags,
-      images,
-      attributes,
-      default_attributes,
-      String? description,
-      String? short_description,
-      String? price,
-      String? salePrice,
-      date_on_sale_from,
-      date_on_sale_from_gmt,
-      date_on_sale_to,
-      date_on_sale_to_gmt,
-      bool? virtual,
-      bool? downloadable,
-      downloads,
-      int? downloads_limit,
-      int? downloads_expiry,
-      String? external_url,
-      String? button_text,
-      String? tax_status,
-      String? tax_class,
-      bool? manage_stock,
-      stock_quantity,
-      String? stock_status,
-      bool? backorders,
-      bool? sold_individually,
-      String? weight,
-      String? dimensions,
-      length,
-      width,
-      height,
-      upsell_ids,
-      cross_sell_ids,
-      int? parent_id,
-      String? purchase_note,
-      featured,
-      grouped_products,
-      int? menu_order,
-      String? meta_data,
-      String? id}) async {
-    var data = {
-      'name': name,
 
-      'type': type,
-      'status': status,
-      'tags': [],
-      'images': [],
-      'attributes': [],
-      'default_attributes': [],
-      'description': description,
-      'short_description': short_description,
-      'regular_price': price,
-      'sale_price': salePrice,
-      'date_on_sale_from': date_on_sale_from,
-      'date_on_sale_from_gmt': date_on_sale_from_gmt,
-      'date_on_sale_to': date_on_sale_to,
-      'date_on_sale_to_gmt': date_on_sale_to_gmt,
-      'virtual': virtual,
-      'downloadable': downloadable,
-      'downloads': [],
-      'downloads_lomit': downloads_limit,
-      'downloads_expiry': downloads_expiry,
-      'external_url': external_url,
-      'button_text': button_text,
-      'tax_status': tax_status,
-      'tax_class': tax_class,
-      'manage_stock': manage_stock,
-      'stock_quantity': stock_quantity,
-      'stock_status': stock_status,
-      'backorders': backorders,
-      'sold_individually': sold_individually,
-      'weight': weight,
-      'dimensions': {},
-      'upsell_ids': [],
-      'cross_sell_ids': [],
-      'parent_id': parent_id,
-      'purchase_note': purchase_note,
-      // 'featured': featured,
-      'grouped_products': [],
-      'menu_order': menu_order,
-      'meta_data': [],
-      'categories': [],
-    };
-
-    var encodedData = jsonEncode(data);
-
-    var response = await ApiServices().postRequest(
-        body: encodedData,
+ 
+// create function for product
+  create_product(Product product) async {
+    // print('$create_product Functioncalled');
+    // print('ha1234kiokd${product.toJson()}');
+    var encodeData = jsonEncode(product.toJson());
+    // print('hakiokd$encodeData');
+    Response response = await ApiServices().postRequest(
+        body: encodeData,
         request: 'products',
         baseUrl: baseUrl,
         consumerKey: consumerKey,
         consumerSecret: consumerSecret);
+    // print('2506$response.body');
     var decodedData = jsonDecode(response.body);
-    // Product parsedData = Product.fromJson(decodedData);
-    // return parsedData;
-    return decodedData;
+    Product data = Product.fromJson(decodedData);
+    return data;
   }
 
-  // create_shipping_class({required String? name, String? description}) async {
-  //   var data = {'name': name, 'description': description};
-  //   var encodedData = jsonEncode(data);
-  //   var response = await ApiServices().postRequest(
-  //       body: encodedData,
-  //       request: 'products/shipping_classes',
-  //       baseUrl: baseUrl,
-  //       consumerKey: consumerKey,
-  //       consumerSecret: consumerSecret);
-  //   var decodedData = jsonDecode(response.body);
-  //   return decodedData;
-  // }
-
-  create_categories({
-    required String? name,
-    int? parent,
-    String? description,
-    String? display,
-    int? id,
-    String? src,
-    String? name_img,
-    String? alt,
-    int? menu_order,
-  }) async {
-    var data = {
-      "name": name,
-      'parent': parent,
-      'description': description,
-      'display': display,
-      'image': {},
-      'menu_order': menu_order,
-    };
-
-    var encodedData = jsonEncode(data);
-    var response = await ApiServices().postRequest(
-        body: encodedData,
+ 
+  create_categories(ProductCategoryModel createCategories) async {
+    var encodeData = jsonEncode(createCategories.toJson());
+    Response response = await ApiServices().postRequest(
+        body: encodeData,
         request: 'products/categories',
         baseUrl: baseUrl,
         consumerKey: consumerKey,
         consumerSecret: consumerSecret);
     var decodedData = jsonDecode(response.body);
-
-    return decodedData;
+    // print(decodedData);
+    ProductCategoryModel data = ProductCategoryModel.fromJson(decodedData);
+    return data;
   }
+  
 
-  create_attributes(
-      {required String? name,
-      String? type,
-      String? order_by,
-      bool? has_archives}) async {
-    var data = {
-      'name': name,
-      'type': type,
-      'order_by': order_by,
-      'has_archives': has_archives
-    };
-
-    var encodedData = jsonEncode(data);
-    var response = await ApiServices().postRequest(
-        body: encodedData,
+  create_attribute(ProductAttributeModel createAttributes) async {
+    var encodeData = jsonEncode(createAttributes.toJson());
+    Response response = await ApiServices().postRequest(
+        body: encodeData,
         request: 'products/attributes',
         baseUrl: baseUrl,
         consumerKey: consumerKey,
         consumerSecret: consumerSecret);
     var decodedData = jsonDecode(response.body);
-    // print(decodedData);
-    return decodedData;
+    ProductAttributeModel data = ProductAttributeModel.fromJson(decodedData);
+    return data;
   }
 
-  get_attributes({String? context}) async {
+  get_attributes({String? context, int? id}) async {
     String request_api = 'products/attributes';
-    var res = await ApiServices()
+    if (id != null) {
+      request_api = 'products/attributes/$id';
+    }
+    Response res = await ApiServices()
         .getRequest(request_api, baseUrl, consumerKey, consumerSecret);
     // print(res);
     var decode_data = json.decode(res.body);
-    print(decode_data);
-    if (decode_data != null) {
-      return ProductAttriduteModel.fromJson(decode_data);
+    // print(decode_data);
+    if (id != null) {
+      return ProductAttributeModel.fromJson(decode_data);
     } else {
-      List<ProductAttriduteModel> attridutes_list = [];
+      List<ProductAttributeModel> attribut_list = [];
       for (var i = 0; i < decode_data.length; i++) {
-        // print('kjidfk$i');
-        ProductAttriduteModel attridutes_data =
-            ProductAttriduteModel.fromJson(decode_data[i]);
-        attridutes_list.add(attridutes_data);
+        ProductAttributeModel attribut_data =
+            ProductAttributeModel.fromJson(decode_data[i]);
+        attribut_list.add(attribut_data);
       }
-      return attridutes_list;
+      return attribut_list;
     }
   }
 
-  create_attributes_terms({
-    int? id,
-    required String? name,
-    String? description,
-    int? menu_order,
-  }) async {
-    var data = {
-      // 'id': id,
-      'name': name,
-      'description': description,
-      'menu_order': menu_order,
-    };
-    var encodedData = jsonEncode(data);
-    var response = await ApiServices().postRequest(
-        body: encodedData,
-        request: 'products/attributes/$id/terms',
+  
+
+  create_attribute_terms(ProductAttributeTermsModel createAttributeTerms,
+      int attributes_id) async {
+    var data = createAttributeTerms.toJson();
+    data['attributes_id'] = attributes_id;
+    var encodeData = jsonEncode(data);
+    Response response = await ApiServices().postRequest(
+        body: encodeData,
+        request: 'products/attributes/$attributes_id/terms',
         baseUrl: baseUrl,
         consumerKey: consumerKey,
         consumerSecret: consumerSecret);
     var decodedData = jsonDecode(response.body);
-    return decodedData;
+    ProductAttributeTermsModel Data =
+        ProductAttributeTermsModel.fromJson(decodedData);
+    return Data;
   }
 
-  get_attribut_terms({String? context, required String? id}) async {
-    String request_api = 'products/attributes/$id/terms';
-    var res = await ApiServices()
+  get_attribut_terms(
+      {String? context,
+      int? page,
+      int? per_page,
+      String? search,
+      List<int>? exclude,
+      List<int>? include,
+      String? order,
+      String? orderby,
+      bool? hide_empty,
+      int? parent,
+      int? product,
+      String? slug,
+      required int? attributes_id,
+      int? term_id}) async {
+    String request_api = 'products/attributes/$attributes_id/terms';
+
+    if (term_id != null) {
+      request_api = 'products/attributes/$attributes_id/terms/$term_id';
+    } else {
+      if (per_page != null) {
+        request_api += '?per_page=$per_page';
+      } else {
+        request_api += '?per_page=100'; // Default perPage
+      }
+
+      if (context != null) request_api += '&context=$context';
+      if (page != null) request_api += '&page=$page';
+      if (search != null) request_api += '&search=$search';
+      if (exclude != null) request_api += '&exclude=${exclude.join(',')}';
+      if (include != null) request_api += '&include=${include.join(',')}';
+      if (order != null) request_api += '&order=$order';
+      if (orderby != null) request_api += '&order=$orderby';
+      if (hide_empty != null) request_api += '&hide_empty=$hide_empty';
+      if (product != null) request_api += '&product=$product';
+      if (slug != null) request_api += '&slug=$slug';
+    }
+    Response res = await ApiServices()
         .getRequest(request_api, baseUrl, consumerKey, consumerSecret);
     // print(res);
     var decode_data = json.decode(res.body);
-    print(decode_data);
-    if (decode_data != null) {
-      return ProductAttributeTermsModel.fromJson(decode_data[0]);
+    // print(decode_data);
+    if (term_id != null) {
+      return ProductAttributeTermsModel.fromJson(decode_data);
     } else {
-      List<ProductAttributeTermsModel> attridutes_terms_list = [];
+      List<ProductAttributeTermsModel> attribut_terms_list = [];
       for (var i = 0; i < decode_data.length; i++) {
-        ProductAttributeTermsModel attridutes_terms_data =
+        ProductAttributeTermsModel attribut_terms =
             ProductAttributeTermsModel.fromJson(decode_data[i]);
-        attridutes_terms_list.add(attridutes_terms_data);
+        attribut_terms_list.add(attribut_terms);
       }
-      return attridutes_terms_list;
+      return attribut_terms_list;
     }
   }
 
-  create_tags({required String? name, String? description}) async {
-    var data = {'name': name, 'description': description};
 
-    Response response;
-    var encodedData = jsonEncode(data);
-    response = await ApiServices().postRequest(
-        body: encodedData,
+  create_tags(ProductTagsModel createTag) async {
+    var encodeData = jsonEncode(createTag.toJson());
+    Response response = await ApiServices().postRequest(
+        body: encodeData,
         request: 'products/tags',
         baseUrl: baseUrl,
         consumerKey: consumerKey,
         consumerSecret: consumerSecret);
     var decodedData = jsonDecode(response.body);
-
-    return decodedData;
+    ProductTagsModel data = ProductTagsModel.fromJson(decodedData);
+    return data;
   }
 
   get_tags(
@@ -910,27 +819,48 @@ class FlutterCanvasWooCommerce {
       int? offset,
       String? order,
       String? orderby,
-      bool? hide_enpty,
+      bool? hide_empty,
       int? product,
       String? slug,
       int? id}) async {
     String request_api = 'products/tags';
 
-    var res = await ApiServices()
+    if (id != null) {
+      request_api = 'products/tags/$id';
+    } else {
+      if (per_page != null) {
+        request_api += '?per_page=$per_page';
+      } else {
+        request_api += '?per_page=100'; // Default perPage
+      }
+
+      if (context != null) request_api += '&context=$context';
+      if (page != null) request_api += '&page=$page';
+      if (search != null) request_api += '&search=$search';
+      if (exclude != null) request_api += '&exclude=${exclude.join(',')}';
+      if (include != null) request_api += '&include=${include.join(',')}';
+      if (offset != null) request_api += '&offset=$offset';
+      if (order != null) request_api += '&order=$order';
+      if (orderby != null) request_api += '&order=$orderby';
+      if (hide_empty != null) request_api += '&hide_empty=$hide_empty';
+      if (product != null) request_api += '&product=$product';
+      if (slug != null) request_api += '&slug=$slug';
+    }
+    Response res = await ApiServices()
         .getRequest(request_api, baseUrl, consumerKey, consumerSecret);
     // print(res);
     var decode_data = json.decode(res.body);
-    print(decode_data);
-    if (decode_data != null) {
+    // print(decode_data);
+    if (id != null) {
       return ProductTagsModel.fromJson(decode_data);
     } else {
-      List<ProductTagsModel> attridutes_list = [];
+      List<ProductTagsModel> tags_list = [];
       for (var i = 0; i < decode_data.length; i++) {
-        ProductTagsModel attridutes_data =
-            ProductTagsModel.fromJson(decode_data[i]);
-        attridutes_list.add(attridutes_data);
+        ProductTagsModel tags_data = ProductTagsModel.fromJson(decode_data[i]);
+        tags_list.add(tags_data);
       }
-      return attridutes_list;
+      // print(attridutes_list);
+      return tags_list;
     }
   }
 }

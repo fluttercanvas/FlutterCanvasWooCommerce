@@ -1,13 +1,15 @@
+// import 'package:flutter/physics.dart';
+
 class ProductCategoryModel {
-  int? id;
-  String? name;
-  String? slug;
-  int? parent;
-  String? description;
-  String? display;
-  Map<String, dynamic>? image;
-  int? menuOrder;
-  int? count;
+  final int? id;
+  final String? name;
+  final String? slug;
+  final int? parent;
+  final String? description;
+  final String? display;
+  final Image_Model? image;
+  final int? menuOrder;
+  final int? count;
 
   ProductCategoryModel({
     this.id,
@@ -29,23 +31,52 @@ class ProductCategoryModel {
       parent: json['parent'],
       description: json['description'],
       display: json['display'],
-      image: json['image'],
+      image: json['image'] != null ? Image_Model.fromJson(json['image']) : null,
       menuOrder: json['menu_order'],
       count: json['count'],
     );
   }
 
-  Map<String, dynamic> toJson(ProductCategoryModel data) {
+  Map<String, dynamic> toJson() {
     return {
-      'id': data.id,
-      'name': data.name,
-      'slug': data.slug,
-      'parent': data.parent,
-      'description': data.description,
-      'display': data.display,
-      'image': data.image,
-      'menu_order': data.menuOrder,
-      'count': data.count
+      if (id != null) 'id': id,
+      'name': name,
+      if (slug != null) 'slug': slug,
+      if (parent != null) 'parent': parent,
+      'description': description,
+      if (display != null) 'display': display,
+      if (image != null) 'image': image,
+      // if (image != null && image!.src != null) 'image': toJson() != image,
+      if (menuOrder != null) 'menu_order': menuOrder,
+      if (count != null) 'count': count
+    };
+  }
+}
+
+class Image_Model {
+  final int? id;
+  final String? src;
+  final String? name;
+  final String? alt;
+
+  Image_Model({
+    this.id,
+    this.src,
+    this.name,
+    this.alt,
+  });
+
+  factory Image_Model.fromJson(Map<String, dynamic> json) {
+    return Image_Model(
+        id: json['id'], src: json['src'], name: json['name'], alt: json['alt']);
+  }
+
+  Map<String, dynamic> toJson() {
+    return {
+      if (id != null) 'id': id,
+      'src': src,
+      if (name != null) 'name': name,
+      if (alt != null) 'alt': alt,
     };
   }
 }
